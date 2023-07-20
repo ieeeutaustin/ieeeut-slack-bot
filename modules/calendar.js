@@ -1,10 +1,11 @@
 const { google } = require("googleapis");
 const {
   formatDate,
-  createHeaderBlock,
+  createWeeklyHeaderBlock,
   createEventBlock,
+  noEventsMessage,
 } = require("../blocks/events");
-const { startOfWeek, endOfWeek, addWeeks } = require("date-fns");
+const { startOfWeek, endOfWeek } = require("date-fns");
 
 require("dotenv").config();
 
@@ -17,7 +18,9 @@ const calendar = google.calendar({
   auth: key,
 });
 
-let section_blocks = [].concat(createHeaderBlock("Monday", "Friday"));
+const today = new Date();
+const thisWeekStart = new Date(startOfWeek(today, { weekStartsOn: 1 }));
+const thisWeekEnd = new Date(endOfWeek(thisWeekStart, { weekStartsOn: 1 }));
 
 // Retrieve upcoming events from the public Google Calendar
 const getUpcomingEvents = async () => {
@@ -38,10 +41,6 @@ const getUpcomingEvents = async () => {
 };
 
 const filterEventsForThisWeek = (events) => {
-  const today = new Date();
-  const thisWeekStart = new Date(startOfWeek(today, { weekStartsOn: 1 }));
-  const thisWeekEnd = new Date(endOfWeek(thisWeekStart, { weekStartsOn: 1 }));
-
   const eventsThisWeek = events.filter((event) => {
     eventStart = new Date(event.start.dateTime);
     eventEnd = new Date(event.end.dateTime);
@@ -52,8 +51,11 @@ const filterEventsForThisWeek = (events) => {
 };
 
 // Display messages into #events channel
-const printUpcomingEvents = async ({ ack, say }) => {
-  await ack();
+const printUpcomingEvents = async () => {
+
+  let section_blocks = [].concat(
+    createWeeklyHeaderBlock(formatDate(thisWeekStart), formatDate(thisWeekEnd))
+  );
 
   const events = await getUpcomingEvents();
   const eventsThisWeek = filterEventsForThisWeek(events);
@@ -63,15 +65,11 @@ const printUpcomingEvents = async ({ ack, say }) => {
       eventBlock = createEventBlock(event);
       section_blocks = section_blocks.concat(eventBlock);
     });
-
-    await say({
-      blocks: section_blocks,
-    });
   } else {
-    await say({
-      text: "No upcoming events found in the public Google Calendar.",
-    });
+    section_blocks = section_blocks.concat(noEventsMessage());
   }
+
+  return section_blocks;
 };
 
 module.exports = { printUpcomingEvents };

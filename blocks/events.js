@@ -4,12 +4,16 @@ const formatTime = (date) => {
   return format(date, "h:mm a");
 };
 
-const formatDate = (date) => {
+const formatDateWithWeekday = (date) => {
   return format(date, "eeee, MMMM do, yyyy");
 };
 
+const formatDate = (date) => {
+  return format(date, "MMMM do, yyyy");
+};
+
 // weekly event header
-const createHeaderBlock = (startOfWeek, endOfWeek) => {
+const createWeeklyHeaderBlock = (startOfWeek, endOfWeek) => {
   headerBlock = [
     {
       type: "section",
@@ -38,7 +42,7 @@ const createEventBlock = (event) => {
 
   const startTime = formatTime(start);
   const endTime = formatTime(end);
-  const eventDate = formatDate(start);
+  const eventDate = formatDateWithWeekday(start);
 
   eventBlock = [
     {
@@ -71,9 +75,25 @@ const createEventBlock = (event) => {
   return eventBlock;
 };
 
+// no events block
+const noEventsMessage = () => {
+  noEvents = [
+    {
+      type: "context",
+      elements: [
+        {
+          text: `:shrug: Looks like there are no events this week :shrug:`,
+          type: "mrkdwn",
+        },
+      ],
+    },
+  ];
+  return noEvents
+};
+
 module.exports = {
-  formatTime,
   formatDate,
-  createHeaderBlock,
+  createWeeklyHeaderBlock,
   createEventBlock,
+  noEventsMessage,
 };
