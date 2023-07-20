@@ -1,5 +1,10 @@
 const { google } = require("googleapis");
-const { createHeaderBlock, createEventBlock } = require("../blocks/events");
+const {
+  formatDate,
+  createHeaderBlock,
+  createEventBlock,
+} = require("../blocks/events");
+const { startOfWeek, endOfWeek, addWeeks } = require("date-fns");
 
 require("dotenv").config();
 
@@ -32,14 +37,29 @@ const getUpcomingEvents = async () => {
   }
 };
 
+const filterEventsForThisWeek = (events) => {
+  const today = new Date();
+  const thisWeekStart = new Date(startOfWeek(today, { weekStartsOn: 1 }));
+  const thisWeekEnd = new Date(endOfWeek(thisWeekStart, { weekStartsOn: 1 }));
+
+  const eventsThisWeek = events.filter((event) => {
+    eventStart = new Date(event.start.dateTime);
+    eventEnd = new Date(event.end.dateTime);
+    return eventStart >= thisWeekStart && eventEnd <= thisWeekEnd;
+  });
+
+  return eventsThisWeek;
+};
+
 // Display messages into #events channel
 const printUpcomingEvents = async ({ ack, say }) => {
   await ack();
 
   const events = await getUpcomingEvents();
+  const eventsThisWeek = filterEventsForThisWeek(events);
 
-  if (events.length > 0) {
-    events.forEach((event) => {
+  if (eventsThisWeek.length > 0) {
+    eventsThisWeek.forEach((event) => {
       eventBlock = createEventBlock(event);
       section_blocks = section_blocks.concat(eventBlock);
     });

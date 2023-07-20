@@ -1,12 +1,12 @@
 const { format } = require("date-fns");
 
 const formatTime = (date) => {
-    return format(date, 'h:mm a')
-}
+  return format(date, "h:mm a");
+};
 
 const formatDate = (date) => {
-    return format(date, 'eeee, MMMM do, yyyy')
-}
+  return format(date, "eeee, MMMM do, yyyy");
+};
 
 // weekly event header
 const createHeaderBlock = (startOfWeek, endOfWeek) => {
@@ -36,9 +36,9 @@ const createEventBlock = (event) => {
   const start = new Date(event.start.dateTime);
   const end = new Date(event.end.dateTime);
 
-  const startTime = formatTime(start)
-  const endTime = formatTime(end)
-  const eventDate = formatDate(start)
+  const startTime = formatTime(start);
+  const endTime = formatTime(end);
+  const eventDate = formatDate(start);
 
   eventBlock = [
     {
@@ -65,13 +65,15 @@ const createEventBlock = (event) => {
       text: {
         type: "mrkdwn",
         text: `${event.description}`,
-      }
+      },
     },
   ];
   return eventBlock;
 };
 
 module.exports = {
+  formatTime,
+  formatDate,
   createHeaderBlock,
   createEventBlock,
 };
