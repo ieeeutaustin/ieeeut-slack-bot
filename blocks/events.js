@@ -19,7 +19,7 @@ const createWeeklyHeaderBlock = (startOfWeek, endOfWeek) => {
       type: "section",
       text: {
         type: "mrkdwn",
-        text: ":tada: *EVENTS THIS WEEK* :tada:",
+        text: ":bangbang: *EVENTS THIS WEEK* :bangbang:",
       },
     },
     {
