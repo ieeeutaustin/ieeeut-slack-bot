@@ -20,12 +20,22 @@ const sendWeeklyEvents = async () => {
     await app.client.chat.postMessage({
       channel: eventsChannel,
       blocks: blocks,
-      text: "uhhh I'm supposed to send a weekly update"
+      text: "uhhh I'm supposed to send a weekly update",
     });
   } catch (err) {
     console.error("Error sending weekly events", err);
   }
 };
+
+// test raspberry pi
+app.command("/events", async ({ command, ack, say }) => {
+  await ack();
+  try {
+    await say('Hello from a raspberry pi!')
+  } catch(err) {
+    console.error("Error: ", err)
+  }
+});
 
 // sends the weekly update every Monday at 9:00 AM
 cron.schedule("0 9 * * Monday", sendWeeklyEvents);
