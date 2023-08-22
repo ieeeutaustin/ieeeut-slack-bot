@@ -27,7 +27,7 @@ const createWelcomeMessage = () => {
         type: "image",
         image_url:
           "https://storage.googleapis.com/ieeeut-slack-bot-welcome/mari_shout.JPG",
-        alt_text: "Redwood Suite",
+        alt_text: "Mari screaming at everybody per usual",
       },
     },
     {
@@ -40,7 +40,7 @@ const createWelcomeMessage = () => {
         type: "image",
         image_url:
           "https://storage.googleapis.com/ieeeut-slack-bot-welcome/armaan_professional.JPG",
-        alt_text: "Redwood Suite",
+        alt_text: "Armaan looking professional asf",
       },
     },
     {
@@ -53,7 +53,7 @@ const createWelcomeMessage = () => {
         type: "image",
         image_url:
           "https://storage.googleapis.com/ieeeut-slack-bot-welcome/fun.jpg",
-        alt_text: "Redwood Suite",
+        alt_text: "IEEE is literally so fun please join I'm begging you I better see you at all the events this is a threat",
       },
     },
     {
@@ -77,7 +77,7 @@ const createWelcomeMessage = () => {
             text: "Join",
           },
           style: "primary",
-          url: "https://discord.gg/puVJ7kPHC5",
+          url: "https://discord.gg/pHVzWyPRCe",
         }
       ],
     },
